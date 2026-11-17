@@ -559,3 +559,70 @@ a.btn--navy:hover { color: var(--teal); }
   .numbers__grid .num:nth-child(n) { padding-left: 0; border-right: 0; margin-top: 0; }
 }
 @media (max-width: 520px) { .specimens { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   EDITORIAL LAYER — inner pages (About, Collection, Why It Matters, Visit)
+   Same words, same images. Centred heroes and heads, no boxes, no vertical dividers.
+   ========================================================================== */
+
+/* Page heroes: centred, like the homepage */
+.page-hero { min-height: min(74vh, 780px); justify-content: center; text-align: center; padding: clamp(60px, 10vh, 120px) 0 clamp(50px, 8vh, 90px); }
+.page-hero__top { padding: 0 var(--pad) clamp(28px, 4vh, 44px); }
+.page-hero__top .kicker { justify-content: center; }
+.page-hero__top .display { max-width: 15ch; margin-left: auto; margin-right: auto; font-size: clamp(3.2rem, 8vw, 9rem); }
+.page-hero .soil-line { display: none; }
+.page-hero__meta { flex-direction: column; align-items: center; gap: 26px; padding: 0; }
+.page-hero__meta .lead { margin: 0 auto; max-width: 46ch; }
+
+/* Text sections: heading centred above one calm reading column */
+.split:not(:has(figure, .map-card, form)) { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: clamp(30px, 5vh, 52px); }
+.split:not(:has(figure, .map-card, form)) .display { max-width: 18ch; margin-left: auto; margin-right: auto; }
+.split:not(:has(figure, .map-card, form)) .prose { text-align: left; margin: 0 auto; max-width: 60ch; }
+.split:not(:has(figure, .map-card, form)) .prose .btn { margin-top: 18px; }
+
+/* About: the magnolia shown large and whole under its heading */
+.split:has(> figure.media) { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: clamp(44px, 7vh, 80px); }
+.split:has(> figure.media) .display { max-width: 18ch; margin-left: auto; margin-right: auto; }
+.split:has(> figure.media) > figure { width: 100%; max-width: 1180px; }
+.split:has(> figure.media) img { box-shadow: 0 50px 100px -40px rgba(0,0,0,.75); }
+
+/* Steps & process: open columns, no vertical dividers */
+.steps { gap: clamp(30px, 5vw, 80px); margin-top: clamp(80px, 12vh, 130px); }
+.step, .step + .step { padding: 36px 0 0; border-left: 0; }
+.step b, .process b { font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1; margin-bottom: 20px; display: block; }
+.process { gap: clamp(20px, 3vw, 44px); }
+.process div, .process div + div { padding: 32px 0 0; border-left: 0; }
+
+/* Facts (Svalbard): large 2 × 2, like the homepage numbers */
+.facts { grid-template-columns: 1fr 1fr; column-gap: clamp(40px, 7vw, 120px); border-top: 0; max-width: 1100px; margin: clamp(70px, 10vh, 110px) auto 0; }
+.facts div, .facts div + div { padding: clamp(26px, 4vh, 40px) 0 clamp(32px, 5vh, 50px); border: 0; border-top: 1px solid var(--line); margin: 0; }
+.facts b { font-size: clamp(3.4rem, 7.6vw, 7.6rem); line-height: .95; letter-spacing: -.02em; }
+.facts span { margin-top: 16px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+
+/* Collection: seeds float on the navy, labels centred, no tile borders */
+.seed-grid { border: 0; gap: clamp(80px, 11vh, 130px) clamp(28px, 4vw, 70px); }
+.seed-tile { border: 0 !important; background: none; padding: 0; min-height: 0; align-items: center; text-align: center; overflow: visible; }
+.seed-tile:hover { background: none; }
+.seed-tile__top { justify-content: center; gap: 18px; width: 100%; }
+.seed-tile__img { width: 100%; padding: 22px 0 28px; }
+.seed-tile__img .seed-photo { background: none; box-shadow: none; width: 86%; }
+.seed-tile .seed-photo img { filter: drop-shadow(0 20px 24px rgba(0,0,0,.5)); }
+.seed-tile__need { margin-bottom: 12px; }
+.seed-tile .latin { display: block; margin-top: 6px; }
+.seed-tile .open { justify-content: center; }
+
+/* Visit: centred info columns, no dividers */
+.info-grid { border-top: 0; gap: clamp(30px, 5vw, 80px); text-align: center; }
+.info-grid > div, .info-grid > div + div { padding: 0; border: 0; }
+.info-grid .btn { margin-top: 18px !important; }
+
+@media (max-width: 860px) {
+  .page-hero { min-height: 0; }
+  .facts { grid-template-columns: 1fr; }
+  .facts div:nth-child(n) { padding-left: 0; border-left: 0; margin-top: 0; }
+  .seed-grid { grid-template-columns: 1fr 1fr; }
+  .process div:nth-child(n) { padding-left: 0; border-left: 0; }
+  .info-grid > div + div { border-top: 0; }
+  .step + .step { border-top: 0; }
+}
+@media (max-width: 560px) { .seed-grid { grid-template-columns: 1fr; } }
