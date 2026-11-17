@@ -4,8 +4,8 @@
    Secular One (display, one weight) + Noto Kufi Arabic (body)
    ========================================================================== */
 
-@font-face { font-family: "Secular One"; src: url("../fonts/SecularOne-Regular.ttf") format("truetype"); font-display: swap; }
-@font-face { font-family: "Noto Kufi Arabic"; src: url("../fonts/NotoKufiArabic-VariableFont_wght.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Secular One"; src: url("../fonts/SecularOne-Regular.woff2") format("woff2"), url("../fonts/SecularOne-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Noto Kufi Arabic"; src: url("../fonts/NotoKufiArabic-Variable.woff2") format("woff2"), url("../fonts/NotoKufiArabic-VariableFont_wght.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
 
 :root {
   --navy: #112C3D;
@@ -371,3 +371,138 @@ section { position: relative; }
   .slider__track { scroll-behavior: auto; }
 }
 @media (max-width: 520px) { .seed-cards { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   PREMIUM LAYER (17 Nov) — refinements on top of the system above.
+   Same words, same images (never cropped). Only spacing, type, rules and light.
+   ========================================================================== */
+:root {
+  --line: rgba(250, 249, 245, .14);
+  --line-ink: rgba(19, 88, 84, .3);           /* thin teal rules on cream */
+  --cream-2: #F6F2EA;                          /* warm paper */
+  --header-h: 76px;
+}
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 8px); }
+body { font-size: 19px; line-height: 1.7; }
+h1, h2, h3, .display { text-wrap: balance; font-kerning: normal; }
+p, .prose, .lead { text-wrap: pretty; }
+.lead { color: rgba(250,249,245,.9); }
+.prose { font-size: 19px; line-height: 1.75; }
+
+/* Kicker: a short amber rule before every small label — one repeated editorial motif */
+.kicker { display: inline-flex; align-items: center; gap: 14px; font-size: 12.5px; letter-spacing: .24em; }
+.kicker::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .8; flex: none; }
+.cta .kicker, .idea__head .kicker { justify-content: center; }
+
+/* Links inside text draw an underline from the left */
+.prose a, .info-grid a, .footer-cols a { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .3s var(--ease), color .3s; }
+.prose a:hover, .info-grid a:hover, .footer-cols a:hover { background-size: 100% 1px; }
+.footer-cols a { display: table; }
+
+/* ---------- Header: glass once you scroll ---------- */
+.site-header { height: var(--header-h); padding-block: 0; background: rgba(17,44,61,.0); border-bottom-color: transparent; transition: background-color .5s var(--ease), border-color .5s var(--ease); }
+.site-header.is-scrolled { background: rgba(17,44,61,.82); -webkit-backdrop-filter: blur(16px) saturate(1.25); backdrop-filter: blur(16px) saturate(1.25); border-bottom-color: rgba(250,249,245,.08); }
+.brand img { height: 40px; }
+.nav { gap: clamp(18px, 2.6vw, 40px); }
+.nav a { font-size: 14.5px; letter-spacing: .03em; }
+
+/* ---------- Paper sections get a faint grain (never over images) ---------- */
+.band--cream, .seeds { background-color: var(--cream-2); position: relative; isolation: isolate; }
+.band--cream::before, .seeds::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.band--cream .steps, .band--cream .step + .step, .process, .process div + div, .seeds__end { border-color: var(--line-ink); }
+
+/* ---------- Home hero: words + the key visual, whole ---------- */
+.home-hero { min-height: calc(100svh - var(--header-h)); text-align: left; padding: clamp(40px, 6vh, 80px) 0 clamp(60px, 9vh, 110px); place-items: stretch; align-content: center; }
+.home-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: clamp(36px, 6vw, 110px); align-items: center; }
+.hero-name { font-size: clamp(2.9rem, 5.6vw, 6.4rem); line-height: .94; max-width: 11ch; margin: 0; letter-spacing: -.015em; }
+.hero-slogan { font-size: clamp(1.5rem, 2.4vw, 2.4rem); margin: clamp(22px, 3.4vh, 36px) 0 0; }
+.hero-ar { text-align: left; margin: 4px 0 clamp(22px, 3vh, 32px); font-size: clamp(1.3rem, 2vw, 1.9rem); }
+.home-hero__copy .lead { margin: 0; max-width: 40ch; }
+.hero-down { align-items: center; gap: 14px; margin-top: clamp(34px, 5vh, 56px); }
+.hero-down__line { width: 40px; height: 1px; background: currentColor; transition: width .4s var(--ease); }
+.hero-down:hover .hero-down__line { width: 64px; }
+.home-hero__visual { margin: 0; justify-self: end; width: 100%; max-width: calc((100svh - var(--header-h) - 120px) * 1400 / 1210); }
+.home-hero__visual img { width: 100%; height: auto; border-radius: 2px; box-shadow: 0 40px 90px -30px rgba(0,0,0,.65), 0 0 0 1px rgba(250,249,245,.06); }
+
+/* ---------- Tree slider: calmer frame ---------- */
+.slider__track { background: transparent; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; }
+.slide { padding: clamp(28px, 4vw, 56px) 0; gap: clamp(32px, 6vw, 110px); }
+.slide__media img { border-radius: 2px; box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); }
+.slide__copy .d-l { max-width: 12ch; }
+.slider__btn { width: 56px; height: 56px; }
+
+/* ---------- Seed cards ---------- */
+.seed-card__img, .seed-photo { border-radius: 2px; }
+.seed-card h3 { font-size: 28px; }
+.seed-card__need { font-size: 17px; }
+.seed-card .seed-photo img, .seed-tile .seed-photo img { transition: transform .9s var(--ease); }
+.seed-card:hover .seed-photo img, .seed-tile:hover .seed-photo img { transform: scale(1.06) translateY(-4px); }
+
+/* ---------- Numbers & facts: tabular, airy ---------- */
+.num b, .facts b { letter-spacing: -.02em; }
+.num span, .facts span { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+.num { padding-top: 40px; }
+
+/* ---------- Inner page heroes: more air ---------- */
+.page-hero { min-height: min(78vh, 820px); }
+.page-hero__top { padding-top: clamp(80px, 14vh, 150px); }
+.page-hero__top .display { letter-spacing: -.015em; }
+
+/* ---------- Steps & process ---------- */
+.step h3 { font-size: 32px; }
+.step p { font-size: 17px; line-height: 1.7; }
+.process h3 { font-size: 26px; }
+.process p { font-size: 16px; }
+
+/* ---------- Collection tiles ---------- */
+.seed-tile { transition: background .7s var(--ease); }
+.seed-tile:hover { background: #15364A; }
+.seed-tile h3 { font-size: 32px; margin-top: 4px; }
+
+/* ---------- Buttons: a touch larger, crisper ---------- */
+.btn { padding: 18px 30px; font-size: 15px; letter-spacing: .02em; }
+
+/* ---------- Footer ---------- */
+.site-footer { padding-top: clamp(110px, 16vh, 170px); }
+.footer-logo { height: 50px; }
+
+/* ---------- Fade: elements rise one after another, once ---------- */
+.fade > * { opacity: 0; transform: translateY(16px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.fade.is-in > * { opacity: 1; transform: none; }
+.fade.is-in > :nth-child(2) { transition-delay: .1s; }
+.fade.is-in > :nth-child(3) { transition-delay: .2s; }
+.fade.is-in > :nth-child(n+4) { transition-delay: .3s; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 960px) {
+  .home-hero { min-height: 0; }
+  .home-hero__grid { grid-template-columns: 1fr; }
+  .home-hero__visual { justify-self: stretch; max-width: none; }
+}
+@media (max-width: 860px) {
+  :root { --header-h: 64px; }
+  body { font-size: 18px; }
+  .brand img { height: 32px; }
+  .nav.is-open { inset: 0; height: 100svh; z-index: -1; background: var(--deep); align-items: flex-start; gap: 10px; padding-top: calc(var(--header-h) + 40px); justify-content: flex-start; }
+  .nav.is-open a { font-size: clamp(2.2rem, 10vw, 3rem); line-height: 1.25; color: var(--cream); }
+  .nav.is-open a[aria-current="page"] { color: var(--amber); }
+  .nav.is-open a::after { display: none; }
+  .menu-btn span { transition: transform .35s var(--ease), box-shadow .2s; }
+  .menu-btn[aria-expanded="true"] span { box-shadow: none; transform: rotate(45deg); }
+  .menu-btn[aria-expanded="true"] span::after { content: ""; position: absolute; inset: 0; background: inherit; transform: rotate(-90deg); }
+  .menu-btn span { position: relative; }
+  .menu-open, .menu-open body { overflow: hidden; }
+  .menu-open .site-header { background: var(--deep); }
+  .slide__copy .d-l { max-width: none; }
+  .grid { grid-template-columns: 1fr; gap: 22px; }
+  .grid > * { grid-column: auto !important; }
+  .numbers .grid { margin-bottom: 48px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fade > * { opacity: 1; transform: none; }
+}

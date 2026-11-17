@@ -7,11 +7,24 @@
 
   /* ---------- Mobile menu ---------- */
   var menuBtn = document.querySelector(".menu-btn"), nav = document.querySelector(".nav");
-  if (menuBtn && nav) menuBtn.addEventListener("click", function () {
-    var open = nav.classList.toggle("is-open");
+  function setMenu(open) {
+    nav.classList.toggle("is-open", open);
     menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    menuBtn.setAttribute("aria-label", open ? "Close menu" : "Menu");
     document.documentElement.classList.toggle("menu-open", open);
-  });
+  }
+  if (menuBtn && nav) {
+    menuBtn.addEventListener("click", function () { setMenu(!nav.classList.contains("is-open")); });
+    nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && nav.classList.contains("is-open")) { setMenu(false); menuBtn.focus(); } });
+  }
+
+  /* ---------- Header: glass background once the page is scrolled ---------- */
+  var header = document.querySelector(".site-header");
+  if (header) {
+    var onScroll = function () { header.classList.toggle("is-scrolled", window.scrollY > 8); };
+    onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
+  }
 
   /* ---------- Tree slider: swipe (native), arrow buttons, dots, ← → keys ---------- */
   [].forEach.call(document.querySelectorAll(".slider"), function (slider) {
