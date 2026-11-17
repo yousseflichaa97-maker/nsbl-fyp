@@ -15,27 +15,33 @@
 :root { --navy: #112C3D; --cream: #FAF9F5; --amber: #F2B43D; --grey: #989EA7; --line: rgba(250,249,245,.22); }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
+/* Responsive layout: the phone takes all the space left over, at any screen size.
+   Portrait: logo / phone / title + dots, stacked. Short landscape: phone on the left, the rest on the right. */
 body {
   background: var(--navy); color: var(--cream);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: clamp(12px, 2.2vh, 22px); padding: clamp(14px, 3vh, 32px) 16px; min-height: 100vh; min-height: 100svh;
+  height: 100vh; height: 100dvh; overflow: hidden;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top" "phone" "info";
+  justify-items: center; align-items: center;
+  gap: clamp(10px, 2.2vh, 24px);
+  padding: max(clamp(12px, 3vh, 32px), env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(clamp(12px, 3vh, 28px), env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none;
 }
-.top { display: flex; align-items: center; gap: 14px; }
-.top img { height: clamp(30px, 4.4vh, 42px); width: auto; display: block; }
+.top { grid-area: top; display: flex; align-items: center; gap: 14px; }
+.top img { height: clamp(28px, 4.4vh, 42px); width: auto; display: block; }
 .top span { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--grey); padding-left: 14px; border-left: 1px solid var(--line); }
+.info { grid-area: info; display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.6vh, 16px); }
 
-/* The phone: the screens already include their own phone outline, so they are shown as they are,
-   in a box with exactly their ratio (820 × 1670). Never cropped. */
-.phone { position: relative; height: min(76vh, 760px); height: min(76svh, 760px); aspect-ratio: 820 / 1670; max-width: calc(100vw - 32px); }
-.phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .25s ease; pointer-events: none; border-radius: 9% / 4.4%; }
+/* The phone: the screens already include their own phone outline, so they are shown whole
+   (object-fit: contain, ratio 820 × 1670). Never cropped. It fills its row, limited by width too. */
+.phone { grid-area: phone; position: relative; height: 100%; max-height: 980px; aspect-ratio: 820 / 1670; max-width: 100%; min-height: 0; }
+.phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .25s ease; pointer-events: none; }
 .phone img.is-on { opacity: 1; }
 .tap { position: absolute; top: 0; bottom: 0; width: 50%; background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .tap--prev { left: 0; cursor: w-resize; } .tap--next { right: 0; cursor: e-resize; }
 .tap:focus-visible { outline: 3px solid var(--amber); outline-offset: 4px; border-radius: 12px; }
 
-.title { text-align: center; min-height: 3.2em; }
+.title { text-align: center; margin: 0; }
 .title small { display: block; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
 .title b { font-family: "Secular One", system-ui, sans-serif; font-weight: 400; font-size: clamp(1.25rem, 2.4vw, 1.7rem); }
 
@@ -47,7 +53,15 @@ body {
 .hint { font-size: 12px; color: var(--grey); margin: 0; }
 
 @media (prefers-reduced-motion: reduce) { .phone img, .dots button::before { transition: none; } }
-@media (max-height: 640px) { .hint { display: none; } }
+@media (max-height: 700px), (pointer: coarse) { .hint { display: none; } }
+@media (max-width: 480px) { .top span { display: none; } .title b { font-size: 1.15rem; } }
+/* Phones held sideways and other short screens */
+@media (orientation: landscape) and (max-height: 560px) {
+  body { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: 1fr auto 1fr; grid-template-areas: "phone ." "phone top" "phone info"; column-gap: clamp(24px, 6vw, 80px); justify-items: start; }
+  .phone { height: calc(100dvh - 24px); max-height: none; justify-self: end; }
+  .top { align-self: end; } .info { align-self: start; align-items: flex-start; }
+  .title { text-align: left; }
+}
 </style>
 </head>
 <body>
@@ -66,9 +80,11 @@ body {
   <button class="tap tap--next" type="button" aria-label="Next screen"></button>
 </main>
 
+<div class="info">
 <p class="title" aria-live="polite"><small id="count">01 / 08</small><b id="name">It’s Beyond Roots</b></p>
 <nav class="dots" aria-label="Jump to a screen"></nav>
 <p class="hint">Tap the right side for next, the left side for back, or use ← →</p>
+</div>
 
 <script>
 (function () {
